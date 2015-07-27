@@ -1,0 +1,4 @@
+I love java.
+I love hadoop.
+I like python.
+I am crazy about Android.

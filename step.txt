@@ -1,0 +1,5 @@
+1. /opt/hadoop-2.6.0/sbin/start-dfs.sh
+2. mvn package
+3. cd target
+4. export HADOOP_CLASSPATH=/home/javakid/git_repository/HelloHadoop/target\
+5. hdfs dfs -put test1.txt input/test.txt
