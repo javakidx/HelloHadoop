@@ -20,12 +20,7 @@ public class WordCountOldAPI
 
         public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException
         {
-            StringTokenizer tokenizer = new StringTokenizer(value.toString(), " ");
-            while(tokenizer.hasMoreTokens())
-            {
-                output.collect(new Text(tokenizer.nextToken()), new IntWritable(1));
-            }
-            //output.collect(new Text(value.toString()), new IntWritable(1));
+            output.collect(new Text(value.toString()), new IntWritable(1));
         }
     }
 
@@ -63,4 +58,17 @@ public class WordCountOldAPI
 
         JobClient.runJob(conf);
     }
+
+    /*public static class MyMapper extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable>
+    {
+
+        public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException
+        {
+            StringTokenizer tokenizer = new StringTokenizer(value.toString(), " ");
+            while(tokenizer.hasMoreTokens())
+            {
+                output.collect(new Text(tokenizer.nextToken()), new IntWritable(1));
+            }
+        }
+    }*/
 }
