@@ -1,5 +1,6 @@
 package idv.jk.hellohadoop;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -20,7 +21,12 @@ public class WordCountOldAPI
 
         public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException
         {
-            output.collect(new Text(value.toString()), new IntWritable(1));
+            //output.collect(new Text(value.toString()), new IntWritable(1));
+            String[] words = StringUtils.split(value.toString(), ' ');
+            for(String word : words)
+            {
+                output.collect(new Text(word), new IntWritable(1));
+            }
         }
     }
 
@@ -46,13 +52,16 @@ public class WordCountOldAPI
         conf.setOutputValueClass(IntWritable.class);
 
         conf.setMapperClass(MyMapper.class);
-        conf.setCombinerClass(MyReducer.class);
+        //conf.setCombinerClass(MyReducer.class);
         conf.setReducerClass(MyReducer.class);
-        conf.setNumMapTasks(1);
+        conf.setNumMapTasks(2);
+        conf.setNumReduceTasks(2);
 
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
 
+        conf.set("mapreduce.textoutputformat.separator", ",");
+        //conf.set("mapreduce.input. keyvaluelinerecordreader.key.value. separator", ",");
         FileInputFormat.setInputPaths(conf, new Path(args[0]));
         FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 

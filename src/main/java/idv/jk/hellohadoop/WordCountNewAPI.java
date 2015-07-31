@@ -5,12 +5,14 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+//import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
@@ -52,13 +54,16 @@ public class WordCountNewAPI
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException
     {
-        Job job = Job.getInstance(new Configuration());
+        Configuration configuration = new Configuration();
+        //configuration.set("mapreduce.output.textoutputformat.separator", ",");
+        Job job = Job.getInstance(configuration);
         job.setJarByClass(WordCountNewAPI.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
         job.setMapperClass(MyMapper.class);
+        job.setCombinerClass(MyReducer.class);  //combiner
         job.setReducerClass(MyReducer.class);
 
         job.setInputFormatClass(TextInputFormat.class); //the package
